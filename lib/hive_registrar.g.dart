@@ -4,11 +4,13 @@
 
 import 'package:hive_ce/hive.dart';
 import 'package:hive_firebase/features/authentication/domain/models/user_model.dart';
+import 'package:hive_firebase/features/note_categories/domain/model/note_categories_model.dart';
 import 'package:hive_firebase/features/notes/domain/models/notes_model.dart';
 import 'package:hive_firebase/features/sync_settings/sync_settings.dart';
 
 extension HiveRegistrar on HiveInterface {
   void registerAdapters() {
+    registerAdapter(NoteCategoriesModelAdapter());
     registerAdapter(NotesModelAdapter());
     registerAdapter(SyncSettingsAdapter());
     registerAdapter(UserModelAdapter());
@@ -17,6 +19,7 @@ extension HiveRegistrar on HiveInterface {
 
 extension IsolatedHiveRegistrar on IsolatedHiveInterface {
   void registerAdapters() {
+    registerAdapter(NoteCategoriesModelAdapter());
     registerAdapter(NotesModelAdapter());
     registerAdapter(SyncSettingsAdapter());
     registerAdapter(UserModelAdapter());
