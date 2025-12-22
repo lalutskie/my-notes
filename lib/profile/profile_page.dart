@@ -1,19 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_firebase/components/custom_button.dart';
-import 'package:hive_firebase/components/custom_menu_button.dart';
 import 'package:hive_firebase/components/custom_nav_bar.dart';
 import 'package:hive_firebase/features/authentication/domain/models/user_model.dart';
-import 'package:hive_firebase/features/note_categories/presentations/cubits/note_categories_cubit.dart';
 import 'package:hive_firebase/features/notes/presentations/cubits/notes_archive_cubit.dart';
 import 'package:hive_firebase/features/notes/presentations/cubits/notes_cubit.dart';
-import 'package:hive_firebase/features/sync_settings/sync_settings.dart';
-import 'package:hive_firebase/features/sync_settings/sync_settings_cubit.dart';
 import 'package:hive_firebase/profile/components/profile_menus.dart';
 import 'package:hive_firebase/profile/components/toggle_sync_button.dart';
 import 'package:hive_firebase/profile/components/user_details.dart';
-import 'package:hive_firebase/utils/custom_theme.dart';
-import 'package:hive_firebase/utils/text_utils.dart';
 
 import '../features/authentication/presentations/cubits/auth_cubit.dart';
 

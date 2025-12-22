@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hive_firebase/components/note_category_chip.dart';
 import 'package:hive_firebase/features/note_categories/domain/model/note_categories_model.dart';
 
-import '../utils/custom_theme.dart';
 
 class NotesCategoryList extends StatelessWidget {
   const NotesCategoryList({
