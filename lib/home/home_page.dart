@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hive_firebase/components/custom_floating_button.dart';
 import 'package:hive_firebase/components/custom_loading.dart';
 import 'package:hive_firebase/components/custom_nav_bar.dart';
 import 'package:hive_firebase/components/notes_category_list.dart';
 import 'package:hive_firebase/components/notes_list.dart';
+import 'package:hive_firebase/components/pop_up_menu.dart';
 import 'package:hive_firebase/features/note_categories/presentations/cubits/note_categories_cubit.dart';
 import 'package:hive_firebase/features/note_categories/presentations/cubits/note_categories_state.dart';
 import 'package:hive_firebase/features/notes/presentations/cubits/notes_cubit.dart';
@@ -27,6 +29,8 @@ class _HomePageState extends State<HomePage> {
   late final noteCategoriesCubit = context.read<NoteCategoriesCubit>();
   late final UserModel? user;
 
+  String? currentLabelId;
+
   @override
   void initState() {
     if (authCubit.currentUser != null) {
@@ -38,27 +42,18 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
+  void _selectLabelId(String? id) {
+    setState(() {
+      currentLabelId = id;
+    });
+    print('current id $id');
+    notesCubit.filterByLabel(currentLabelId);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.fromLTRB(0, 0, 0, 60),
-        child: GestureDetector(
-          onTap: () => context.push('/create-note'),
-          child: Container(
-            height: 40,
-            width: 40,
-            decoration: BoxDecoration(
-              color: CustomTheme.colors(context).secondaryBackground,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Icon(
-              Icons.add_rounded,
-              color: CustomTheme.colors(context).primary,
-            ),
-          ),
-        ),
-      ),
+      floatingActionButton: CustomFloatingButton(onTap: () => context.push('/create-note')),
       body: SafeArea(
         child: SizedBox(
           width: double.infinity,
@@ -79,55 +74,8 @@ class _HomePageState extends State<HomePage> {
                           ),
                     ),
 
-                    PopupMenuButton(
-                      tooltip: 'Menu',
-                      elevation: 1,
-                      color: Colors.white,
-                      itemBuilder: (context) => [
-                        PopupMenuItem(
-                          onTap: () => context.push('/archived-notes'),
-                          child: Text(
-                            'Archives',
-                            style: CustomTheme.typography(context).bodyMedium
-                                .copyWith(
-                                  color: CustomTheme.colors(
-                                    context,
-                                  ).primaryText,
-                                ),
-                          ),
-                        ),
-
-                        PopupMenuItem(
-                          onTap: () {
-                            context.push('/favorites');
-                          },
-                          child: Text(
-                            'Favorites',
-                            style: CustomTheme.typography(context).bodyMedium
-                                .copyWith(
-                                  color: CustomTheme.colors(
-                                    context,
-                                  ).primaryText,
-                                ),
-                          ),
-                        ),
-
-                        PopupMenuItem(
-                          onTap: () {
-                            context.push('/create-note-category');
-                          },
-                          child: Text(
-                            'Labels',
-                            style: CustomTheme.typography(context).bodyMedium
-                                .copyWith(
-                                  color: CustomTheme.colors(
-                                    context,
-                                  ).primaryText,
-                                ),
-                          ),
-                        ),
-                      ],
-                    ),
+                    PopUpMenu(),
+                    
                   ],
                 ),
               ),
@@ -176,7 +124,7 @@ class _HomePageState extends State<HomePage> {
                               );
                             }
 
-                            return NotesCategoryList(noteCategoriesList: state.noteCategoriesModel,);
+                            return NotesCategoryList(noteCategoriesList: state.noteCategoriesModel, onSelected: _selectLabelId, currentSelectedId: currentLabelId,);
                             
                           }
 

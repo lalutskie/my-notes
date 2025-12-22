@@ -4,10 +4,14 @@ import 'package:hive_firebase/components/custom_button.dart';
 import 'package:hive_firebase/components/custom_menu_button.dart';
 import 'package:hive_firebase/components/custom_nav_bar.dart';
 import 'package:hive_firebase/features/authentication/domain/models/user_model.dart';
+import 'package:hive_firebase/features/note_categories/presentations/cubits/note_categories_cubit.dart';
 import 'package:hive_firebase/features/notes/presentations/cubits/notes_archive_cubit.dart';
 import 'package:hive_firebase/features/notes/presentations/cubits/notes_cubit.dart';
 import 'package:hive_firebase/features/sync_settings/sync_settings.dart';
 import 'package:hive_firebase/features/sync_settings/sync_settings_cubit.dart';
+import 'package:hive_firebase/profile/components/profile_menus.dart';
+import 'package:hive_firebase/profile/components/toggle_sync_button.dart';
+import 'package:hive_firebase/profile/components/user_details.dart';
 import 'package:hive_firebase/utils/custom_theme.dart';
 import 'package:hive_firebase/utils/text_utils.dart';
 
@@ -60,105 +64,18 @@ class _ProfilePageState extends State<ProfilePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
 
                     children: [
-                      Text(
-                        TextUtils.capitalizeEachWord(
-                          currentUser?.name ?? 'Name name',
-                        ),
-                        style: CustomTheme.typography(context).headlineSmall
-                            .copyWith(
-                              color: CustomTheme.colors(context).primaryText,
-                              fontWeight: FontWeight.bold,
-                            ),
-                      ),
 
-                      Text(
-                        currentUser?.email ?? 'Your email',
-                        style: CustomTheme.typography(context).bodyMedium
-                            .copyWith(
-                              color: CustomTheme.colors(context).tertiaryText,
-                            ),
-                      ),
+                      UserDetails(currentUser: currentUser),
 
                       SizedBox(height: 32),
 
-
-                      CustomMenuButton(
-                        function: () {},
-                        leadIcon: Icons.edit_outlined,
-                        trailIcon: Icons.chevron_right_rounded,
-                        name: 'Update Profile',
-                      ),
+                      ProfileMenus(),
 
                       SizedBox(height: 8),
 
-                      CustomMenuButton(
-                        function: () {},
-                        leadIcon: Icons.settings_outlined,
-                        trailIcon: Icons.chevron_right_rounded,
-                        name: 'Settings',
-                      ),
-
-                      SizedBox(height: 8),
-
-
-                      BlocBuilder<SyncSettingsCubit, SyncSettings>(
-                        builder: (context, state) {
-                          return Container(
-                            width: double.infinity,
-                            height: 48,
-                            decoration: BoxDecoration(
-                              color: CustomTheme.colors(context).secondaryBackground,
-                              borderRadius: BorderRadius.circular(12)
-                            ),
-                            child: Row(
-                              children: [
-                                SizedBox(width: 16),
-                                Icon(Icons.sync_outlined),
-                                SizedBox(width: 8),
-
-                                Text(
-                                  state.isSyncEnabled ? 'Synced' : 'Not sync',
-                                  style: CustomTheme.typography(context)
-                                      .bodyMedium
-                                      .copyWith(
-                                        color: CustomTheme.colors(
-                                          context,
-                                        ).tertiaryText,
-                                      ),
-                                ),
-
-                                Spacer(),
-                                Switch(
-                                  value: state.isSyncEnabled,
-                                  focusColor: CustomTheme.colors(context).primary,
-                                  activeThumbColor:  CustomTheme.colors(context).secondaryBackground,
-                                  activeTrackColor:  CustomTheme.colors(context).primary,
-                                  onChanged: (value) async {
-                                    context
-                                        .read<SyncSettingsCubit>()
-                                        .toggleSync();
-
-                                    print('sync settings: $value');
-
-                                    if(value) {
-                                      if (currentUser == null) return;
-
-                                      await context
-                                          .read<NotesCubit>()
-                                          .enableSyncAndMerge(currentUser!.uid);
-                                    }
-                                  },
-                                ),
-
-                                SizedBox(width: 8),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
+                      ToggleSyncButton(),
 
                       SizedBox(height: 120),
-
                       
                       CustomButton(text: 'Logout', function: logoutUser, width: double.infinity,)
                     ],

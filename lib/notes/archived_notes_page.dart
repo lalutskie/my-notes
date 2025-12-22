@@ -58,32 +58,12 @@ class _ArchiveNotesState extends State<ArchivedNotesPage> {
                 BlocBuilder<NotesArchiveCubit, List<NotesModel>>(
                   builder: (context, notes) {
                     return Expanded(
-                      child: Column(
-                        children: [
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: Text(
-                              "(${notes.isNotEmpty ? notes.length : 0})",
-                              style: CustomTheme.typography(context).bodyMedium
-                                  .copyWith(
-                                    color: CustomTheme.colors(
-                                      context,
-                                    ).tertiaryText,
-                                  ),
-                            ),
-                          ),
-
-                          SizedBox(height: 5,),
-                          Expanded(
                             child: NotesList(
                               notes: notes,
                               emptyMessage: "You can see here you archived notes",
                               isListArchived: true,
                             ),
-                          ),
-                        ],
-                      ),
-                    );
+                          );
                   },
                 )
               ],

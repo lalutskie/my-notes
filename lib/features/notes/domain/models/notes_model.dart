@@ -28,6 +28,9 @@ class NotesModel {
   @HiveField(7)
   final bool? isBookmarked;
 
+  @HiveField(8)
+  final String? categoryId;
+
   NotesModel({
     required this.id,
     required this.uid,
@@ -37,6 +40,7 @@ class NotesModel {
     this.updatedAt,
     this.deletedAt,
     this.isBookmarked = false,
+    this.categoryId,
   });
 
   factory NotesModel.fromMap(Map<String, dynamic> map) {
@@ -54,7 +58,9 @@ class NotesModel {
       deletedAt: map['deletedAt'] is Timestamp
           ? (map['deletedAt'] as Timestamp).toDate()
           : map['deletedAt'],
-      isBookmarked: map['isBookmarked'] as bool
+      isBookmarked: map['isBookmarked'] as bool,
+      categoryId: map['categoryId'],
+      
     );
   }
 
@@ -67,6 +73,7 @@ class NotesModel {
     DateTime? updatedAt,
     DateTime? deletedAt,
     bool? isBookmarked,
+    String? categoryId,
   }) {
     return NotesModel(
       id: id ?? this.id,
@@ -77,7 +84,7 @@ class NotesModel {
       updatedAt: updatedAt ?? this.updatedAt,
       deletedAt: deletedAt ?? this.deletedAt,
       isBookmarked: isBookmarked ?? this.isBookmarked,
-
+      categoryId: categoryId ?? this.categoryId,
     );
   }
 
@@ -91,6 +98,7 @@ class NotesModel {
       'updatedAt': updatedAt,
       'deletedAt': deletedAt,
       'isBookmarked': isBookmarked,
+      'categoryId': categoryId,
     };
   }
 }

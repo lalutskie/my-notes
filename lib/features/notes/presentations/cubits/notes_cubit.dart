@@ -225,4 +225,18 @@ class NotesCubit extends Cubit<NotesState> {
   void _sortNotes(List<NotesModel> notes) {
     notes.sort((a, b) => b.updatedAt!.compareTo(a.updatedAt!));
   }
+
+  void filterByLabel(String? categoryId) {
+
+    final currentNotes = noteBox.values.toList();
+    _sortNotes(currentNotes);
+    if(categoryId == null) {
+      emit(NotesLoaded(currentNotes));
+      return;
+    } 
+
+    final filteredNotes = currentNotes.where((note) => note.categoryId == categoryId).toList();
+
+    emit(NotesLoaded(filteredNotes));
+  }
 }

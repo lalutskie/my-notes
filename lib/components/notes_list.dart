@@ -123,15 +123,12 @@ class _NotesListState extends State<NotesList>
               if (index < _visibleNotes.length) {
                 final note = _visibleNotes[index];
 
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: RepaintBoundary(
-                    // ✅ Add key for better list performance
-                    key: ValueKey(note.id),
-                    child: NotesContainer(
-                      note: note,
-                      isListArchived: widget.isListArchived,
-                    ),
+                return RepaintBoundary(
+                  // ✅ Add key for better list performance
+                  key: ValueKey(note.id),
+                  child: NotesContainer(
+                    note: note,
+                    isListArchived: widget.isListArchived,
                   ),
                 );
               } else {

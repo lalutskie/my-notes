@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive_firebase/features/authentication/presentations/cubits/auth_state.dart';
 import 'package:hive_firebase/features/note_categories/data/firebase_note_categories_repo.dart';
-import 'package:hive_firebase/features/note_categories/domain/repos/note_categories_repo.dart';
 import 'package:hive_firebase/features/note_categories/presentations/cubits/note_categories_cubit.dart';
 import 'package:hive_firebase/features/notes/data/firebase_notes_repo.dart';
 import 'package:hive_firebase/features/notes/presentations/cubits/notes_cubit.dart';
@@ -11,6 +10,7 @@ import 'package:hive_firebase/features/notes/presentations/cubits/notes_archive_
 import 'package:hive_firebase/features/sync_settings/sync_data_source.dart';
 import 'package:hive_firebase/features/sync_settings/sync_settings_cubit.dart';
 import 'package:hive_firebase/home/home_page.dart';
+import 'package:hive_firebase/labels/labels_page.dart';
 import 'package:hive_firebase/login/login_page.dart';
 import 'package:hive_firebase/notes/archived_notes_page.dart';
 import 'package:hive_firebase/notes/create_note_category_page.dart';
@@ -100,7 +100,9 @@ class _MyAppState extends State<MyApp> {
         GoRoute(path: '/archived-notes', builder: (context, state) => ArchivedNotesPage()),
         GoRoute(path: '/favorites', builder: (context, state) => FavoriteNotesPage()),
         GoRoute(path: '/search', builder: (context, state) => SearchPage()),
-        GoRoute(path: '/create-note-category', builder: (context, state) => CreateNoteCategoryPage(),)
+        GoRoute(path: '/create-note-category', builder: (context, state) => CreateNoteCategoryPage(),),
+        GoRoute(path: '/labels', builder: (context, state) => LabelsPage(),)
+
 
 
         

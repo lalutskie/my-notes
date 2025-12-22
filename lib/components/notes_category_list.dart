@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:hive_firebase/components/note_category_chip.dart';
 import 'package:hive_firebase/features/note_categories/domain/model/note_categories_model.dart';
 
 import '../utils/custom_theme.dart';
 
-class NotesCategoryList extends StatefulWidget {
-  const NotesCategoryList({super.key, required this.noteCategoriesList});
+class NotesCategoryList extends StatelessWidget {
+  const NotesCategoryList({
+    super.key,
+    required this.noteCategoriesList,
+    required this.onSelected,
+    this.currentSelectedId,
+  });
 
   final List<NoteCategoriesModel> noteCategoriesList;
-
-  @override
-  State<NotesCategoryList> createState() => _NotesCategoryListState();
-}
-
-class _NotesCategoryListState extends State<NotesCategoryList> {
-
-  
-
+  final ValueChanged<String?> onSelected;
+  final String? currentSelectedId;
 
   @override
   Widget build(BuildContext context) {
@@ -24,31 +23,26 @@ class _NotesCategoryListState extends State<NotesCategoryList> {
       child: ListView.builder(
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
-        itemCount: widget.noteCategoriesList.length,
+        itemCount: noteCategoriesList.length + 1,
         primary: false,
         itemBuilder: (context, index) {
+          if (index == 0) {
+            return NoteCategoryChip(
+              labelName: 'All',
+              categoryId: null,
+              isSelected: currentSelectedId == null,
+              onTap: () => onSelected(null),
 
+            );
+          }
 
-          final NoteCategoriesModel noteCategoryItem = widget.noteCategoriesList[index];
-          return Center(
-            child: Container(
-              padding: const EdgeInsets.fromLTRB(8, 5, 8, 5),
-              margin: const EdgeInsets.only(right: 5),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(40),
-                color: CustomTheme.colors(context).primary,
-                border: BoxBorder.all(
-                  color: CustomTheme.colors(context).primary,
-                  width: 1,
-                ),
-              ),
-              child: Text(
-                noteCategoryItem.name,
-                style: CustomTheme.typography(context).bodyMedium.copyWith(
-                  color: CustomTheme.colors(context).secondaryText,
-                ),
-              ),
-            ),
+          final NoteCategoriesModel noteCategoryItem =
+              noteCategoriesList[index - 1];
+          return NoteCategoryChip(
+            labelName: noteCategoryItem.name,
+            categoryId: noteCategoryItem.id,
+            isSelected: currentSelectedId == noteCategoryItem.id,
+            onTap: () => onSelected(noteCategoryItem.id),
           );
         },
       ),

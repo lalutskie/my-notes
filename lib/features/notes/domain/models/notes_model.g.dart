@@ -25,13 +25,14 @@ class NotesModelAdapter extends TypeAdapter<NotesModel> {
       updatedAt: fields[5] as DateTime?,
       deletedAt: fields[6] as DateTime?,
       isBookmarked: fields[7] == null ? false : fields[7] as bool?,
+      categoryId: fields[8] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, NotesModel obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -47,7 +48,9 @@ class NotesModelAdapter extends TypeAdapter<NotesModel> {
       ..writeByte(6)
       ..write(obj.deletedAt)
       ..writeByte(7)
-      ..write(obj.isBookmarked);
+      ..write(obj.isBookmarked)
+      ..writeByte(8)
+      ..write(obj.categoryId);
   }
 
   @override

@@ -36,24 +36,6 @@ class _FavoriteNotesPageState extends State<FavoriteNotesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.fromLTRB(0, 0, 0, 60),
-        child: GestureDetector(
-          onTap: () => context.push('/create-note'),
-          child: Container(
-            height: 40,
-            width: 40,
-            decoration: BoxDecoration(
-              color: CustomTheme.colors(context).secondaryBackground,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Icon(
-              Icons.add_rounded,
-              color: CustomTheme.colors(context).primary,
-            ),
-          ),
-        ),
-      ),
       body: SafeArea(
         child: SizedBox(
           width: double.infinity,
@@ -91,14 +73,16 @@ class _FavoriteNotesPageState extends State<FavoriteNotesPage> {
                       BlocBuilder<NotesCubit, NotesState>(
                         builder: (context, state) {
                           if (state is NotesLoaded) {
-                            final favoriteNotes = state.notesModel.where((note) => note.isBookmarked == true).toList();
+                            final favoriteNotes = state.notesModel
+                                .where((note) => note.isBookmarked == true)
+                                .toList();
                             return Expanded(
                               child: NotesList(
-                                      notes: favoriteNotes,
-                                      emptyMessage:
-                                          "Notes are empty. Try to create one!",
-                                      isListArchived: false,
-                                    ),
+                                notes: favoriteNotes,
+                                emptyMessage:
+                                    "Try to favorite one of your notes",
+                                isListArchived: false,
+                              ),
                             );
                           }
 
