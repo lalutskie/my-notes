@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive_firebase/features/authentication/presentations/cubits/auth_state.dart';
+import 'package:hive_firebase/features/authentication/presentations/session_cubit.dart';
 import 'package:hive_firebase/features/note_categories/data/firebase_note_categories_repo.dart';
 import 'package:hive_firebase/features/note_categories/presentations/cubits/note_categories_cubit.dart';
 import 'package:hive_firebase/features/notes/data/firebase_notes_repo.dart';
@@ -22,6 +23,7 @@ import 'package:hive_firebase/register/register_page.dart';
 import 'package:hive_firebase/search/search_page.dart';
 import 'package:hive_firebase/splash/splash_page.dart';
 import 'package:hive_firebase/utils/custom_theme.dart';
+import 'package:provider/provider.dart';
 
 import 'features/authentication/data/firebase_auth_repo.dart';
 import 'features/authentication/presentations/cubits/auth_cubit.dart';
@@ -61,9 +63,10 @@ class _MyAppState extends State<MyApp> {
     authCubit = AuthCubit(authRepo: authRepo)
       ..checkAuth();
     notesCubit = NotesCubit(notesRepo: notesRepo, syncDataSource);
-    syncSettingsCubit = SyncSettingsCubit(syncDataSource);
     notesArchiveCubit = NotesArchiveCubit(notesRepo: notesRepo, syncDataSource: syncDataSource);
     noteCategoriesCubit = NoteCategoriesCubit(syncDataSource, noteCategoriesRepo: noteCategoriesRepo);
+    syncSettingsCubit = SyncSettingsCubit(syncDataSource, notesCubit, noteCategoriesCubit);
+
     
     
     super.initState();
@@ -103,10 +106,7 @@ class _MyAppState extends State<MyApp> {
         GoRoute(path: '/create-note-category', builder: (context, state) => CreateNoteCategoryPage(),),
         GoRoute(path: '/labels', builder: (context, state) => LabelsPage(),)
 
-
-
-        
-
+    
 
       ],
       refreshListenable: GoRouterStream(authCubit.stream),
@@ -139,16 +139,23 @@ class _MyAppState extends State<MyApp> {
         BlocProvider.value(value: notesCubit),
         BlocProvider.value(value: syncSettingsCubit),
         BlocProvider.value(value: notesArchiveCubit),
-        BlocProvider.value(value: noteCategoriesCubit)
-
+        BlocProvider.value(value: noteCategoriesCubit),
       ],
-      child: MaterialApp.router(
-        scaffoldMessengerKey: rootScaffoldMessengerKey,
-        routerConfig: router,
-        debugShowCheckedModeBanner: false,
-        theme: CustomTheme.light,
-        darkTheme: CustomTheme.dark,
-        themeMode: ThemeMode.light,
+      child: Provider(
+        create: (context) => SessionCubit(
+          authCubit: authCubit,
+          notesCubit: notesCubit,
+          archiveCubit: notesArchiveCubit,
+          categoriesCubit: noteCategoriesCubit,
+        ),
+        child: MaterialApp.router(
+          scaffoldMessengerKey: rootScaffoldMessengerKey,
+          routerConfig: router,
+          debugShowCheckedModeBanner: false,
+          theme: CustomTheme.light,
+          darkTheme: CustomTheme.dark,
+          themeMode: ThemeMode.light,
+        ),
       ),
     );
   }

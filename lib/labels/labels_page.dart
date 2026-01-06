@@ -5,6 +5,7 @@ import 'package:hive_firebase/components/custom_back_button.dart';
 import 'package:hive_firebase/components/custom_floating_button.dart';
 import 'package:hive_firebase/components/custom_loading.dart';
 import 'package:hive_firebase/components/custom_snackbar_service.dart';
+import 'package:hive_firebase/components/notes_category_item.dart';
 import 'package:hive_firebase/features/authentication/presentations/cubits/auth_cubit.dart';
 import 'package:hive_firebase/features/note_categories/domain/model/note_categories_model.dart';
 import 'package:hive_firebase/features/note_categories/presentations/cubits/note_categories_cubit.dart';
@@ -110,66 +111,11 @@ class _LabelsPageState extends State<LabelsPage> {
                                   final NoteCategoriesModel noteCategoryItem =
                                       state.noteCategoriesModel[index];
 
-                                  return Container(
-                                    margin: const EdgeInsets.only(bottom: 5),
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                        16,
-                                        12,
-                                        16,
-                                        12,
-                                      ),
-                                      child: Row(
-                                        spacing: 8,
-                                        children: [
-                                          if (_selectedIds.contains(
-                                            noteCategoryItem.id,
-                                          ))
-                                            GestureDetector(
-                                              onTap: () => _deleteCategory(
-                                                noteCategoryItem.id,
-                                              ),
-                                              child: Icon(
-                                                Icons.delete_outline_outlined,
-                                                color: CustomTheme.colors(
-                                                  context,
-                                                ).error,
-                                              ),
-                                            ),
-                                          Expanded(
-                                            child: Text(
-                                              noteCategoryItem.name,
-                                              style:
-                                                  CustomTheme.typography(
-                                                    context,
-                                                  ).bodyMedium.copyWith(
-                                                    fontWeight: FontWeight.w500,
-                                                    color: CustomTheme.colors(
-                                                      context,
-                                                    ).primaryText,
-                                                  ),
-                                            ),
-                                          ),
-
-                                          GestureDetector(
-                                            onTap: () => _toggleSelection(
-                                              noteCategoryItem.id,
-                                            ),
-                                            child: Icon(
-                                              Icons.edit_outlined,
-                                              color: CustomTheme.colors(
-                                                context,
-                                              ).primary,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
+                                  return NotesCategoryItem(
+                                    noteCategoryItem: noteCategoryItem,
+                                    toggleSelection: _toggleSelection,
+                                    deleteCategory: _deleteCategory,
+                                    isSelected: _selectedIds.contains(noteCategoryItem.id),
                                   );
                                 },
                               ),

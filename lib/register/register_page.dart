@@ -99,7 +99,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         obSecureText: false,
                         labelText: 'Full name',
                         hintText: 'Enter your full name',
-                        textInputType: TextInputType.name,
+                        keyboardType: TextInputType.name,
                       ),
 
                       SizedBox(height: 8),
@@ -109,7 +109,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         obSecureText: false,
                         labelText: 'Email',
                         hintText: 'Enter email address',
-                        textInputType: TextInputType.emailAddress,
+                        keyboardType: TextInputType.emailAddress,
                       ),
 
                       SizedBox(height: 8),

@@ -46,7 +46,6 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       currentLabelId = id;
     });
-    print('current id $id');
     notesCubit.filterByLabel(currentLabelId);
   }
 
@@ -103,23 +102,21 @@ class _HomePageState extends State<HomePage> {
                               return GestureDetector(
                                 onTap: () =>
                                     context.push('/create-note-category'),
-                                child: Center(
-                                  child: Container(
-                                    padding: const EdgeInsets.fromLTRB(
-                                      8,
-                                      5,
-                                      8,
-                                      5,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(40),
-                                      border: BoxBorder.all(
-                                        color: Colors.grey,
-                                        width: 1,
-                                      ),
-                                    ),
-                                    child: Text('+ Create'),
+                                child: Container(
+                                  padding: const EdgeInsets.fromLTRB(
+                                    8,
+                                    5,
+                                    8,
+                                    5,
                                   ),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(40),
+                                    border: BoxBorder.all(
+                                      color: Colors.grey,
+                                      width: 1,
+                                    ),
+                                  ),
+                                  child: Text('+ Create label'),
                                 ),
                               );
                             }

@@ -1,3 +1,4 @@
+
 import 'package:hive_firebase/utils/custom_theme.dart';
 import 'package:flutter/material.dart';
 
@@ -9,11 +10,10 @@ class CustomTextfield extends StatefulWidget {
     this.labelText,
     required this.obSecureText,
     this.focusNode,
-    this.textInputType,
     this.minLines,
     this.maxLines,
     this.maxLength,
-    this.isReadable,
+    this.isReadable, this.onSubmit, this.textInputAction, this.keyboardType,
   });
 
   final TextEditingController controller;
@@ -21,11 +21,13 @@ class CustomTextfield extends StatefulWidget {
   final String? labelText;
   final bool obSecureText;
   final FocusNode? focusNode;
-  final TextInputType? textInputType;
   final int? minLines;
   final int? maxLines;
   final int? maxLength;
   final bool? isReadable;
+  final void Function()? onSubmit;
+  final TextInputAction? textInputAction;
+  final TextInputType? keyboardType;
 
   @override
   State<CustomTextfield> createState() => _CustomTextfieldState();
@@ -53,6 +55,13 @@ class _CustomTextfieldState extends State<CustomTextfield> {
       readOnly: widget.isReadable ?? false,
       textAlignVertical: TextAlignVertical.top,
       enableInteractiveSelection: true,
+      textInputAction: widget.textInputAction ?? TextInputAction.done,
+      keyboardType: widget.keyboardType ?? TextInputType.text,
+      onFieldSubmitted: (value) {
+        if (widget.onSubmit != null) {
+          widget.onSubmit!();
+        }
+      },
       decoration: InputDecoration(
         alignLabelWithHint: true,
         suffixIcon: widget.obSecureText
@@ -111,7 +120,6 @@ class _CustomTextfieldState extends State<CustomTextfield> {
       style: CustomTheme.typography(
         context,
       ).bodyMedium.copyWith(color: CustomTheme.colors(context).primaryText),
-      keyboardType: widget.textInputType,
       cursorColor: CustomTheme.colors(context).primaryText,
       // validator: (error) {
       //   return 'asdad';

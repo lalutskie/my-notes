@@ -44,16 +44,16 @@ class ToggleSyncButton extends StatelessWidget {
                 ).secondaryBackground,
                 activeTrackColor: CustomTheme.colors(context).primary,
                 onChanged: (value) async {
-                  final syncCubit = context.read<SyncSettingsCubit>();
                   final authCubit = context.read<AuthCubit>();
 
                   if(authCubit.currentUser == null) return;
 
+                  final syncCubit = context.read<SyncSettingsCubit>();
+
                   if(value) {
                     final String userId = authCubit.currentUser!.uid;
-                    await syncCubit.enableSync();
-                    await context.read<NotesCubit>().enableSyncAndMerge(userId);
-                    await context.read<NoteCategoriesCubit>().enableSyncAndMerge(userId);
+                    await syncCubit.enableSync(userId);
+                    
                   } else {
                     await syncCubit.disableSync();
                   }

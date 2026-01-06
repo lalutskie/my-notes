@@ -106,7 +106,8 @@ class _LoginPageState extends State<LoginPage> {
                         obSecureText: false,
                         labelText: 'Email',
                         hintText: 'Enter email address',
-                        textInputType: TextInputType.emailAddress,
+                        keyboardType: TextInputType.emailAddress,
+                        textInputAction: TextInputAction.next,
                       ),
 
                       SizedBox(height: 8),
@@ -117,6 +118,7 @@ class _LoginPageState extends State<LoginPage> {
                         labelText: 'Password',
                         hintText: 'Enter password',
                         maxLines: 1,
+                        textInputAction: TextInputAction.done,
                       ),
 
                       SizedBox(height: 8),

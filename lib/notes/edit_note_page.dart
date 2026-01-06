@@ -163,6 +163,18 @@ class _AddNotesPageState extends State<EditNotePage> {
                                 ),
                           ),
                         ),
+
+                        PopupMenuItem(
+                          onTap: () async {
+                          },
+                          child: Text(
+                            'Label note',
+                            style: CustomTheme.typography(context).bodyMedium
+                                .copyWith(
+                                  color: CustomTheme.colors(context).primaryText,
+                                ),
+                          ),
+                        ),
                       ],
                     ),
                   ],
@@ -260,7 +272,6 @@ class _AddNotesPageState extends State<EditNotePage> {
                 
                       BlocConsumer<NotesCubit, NotesState>(
                         builder: (context, state) {
-                          print('note state: $state');
                           if (state is NotesUploading) {
                             return CustomLoading();
                           }

@@ -3,8 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_firebase/components/custom_button.dart';
 import 'package:hive_firebase/components/custom_nav_bar.dart';
 import 'package:hive_firebase/features/authentication/domain/models/user_model.dart';
-import 'package:hive_firebase/features/notes/presentations/cubits/notes_archive_cubit.dart';
-import 'package:hive_firebase/features/notes/presentations/cubits/notes_cubit.dart';
+import 'package:hive_firebase/features/authentication/presentations/session_cubit.dart';
 import 'package:hive_firebase/profile/components/profile_menus.dart';
 import 'package:hive_firebase/profile/components/toggle_sync_button.dart';
 import 'package:hive_firebase/profile/components/user_details.dart';
@@ -31,12 +30,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void logoutUser() {
-    final notesCubit = context.read<NotesCubit>();
-    final archiveCubit = context.read<NotesArchiveCubit>();
-    final authCubit = context.read<AuthCubit>();
-    notesCubit.noteBox.clear();
-    archiveCubit.deletedNotesBox.clear();
-    authCubit.logoutUser();
+    context.read<SessionCubit>().logout();
   }
 
   @override

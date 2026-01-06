@@ -14,9 +14,6 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> checkAuth() async {
     emit(AuthLoading());
     try {
-
-
-
       final remoteUser = await authRepo.getCurrentuser();
 
       if (remoteUser != null) {
@@ -68,6 +65,7 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> logoutUser() async {
     emit(AuthLoading());
     try {
+      
       await authRepo.logoutUser();
       
       emit(Unauthenticated());
@@ -85,4 +83,5 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthError(e.toString()));
     }
   }
+
 }
