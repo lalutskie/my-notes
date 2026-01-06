@@ -10,11 +10,15 @@ import 'package:hive_firebase/features/authentication/presentations/cubits/auth_
 import 'package:hive_firebase/features/note_categories/domain/model/note_categories_model.dart';
 import 'package:hive_firebase/features/note_categories/presentations/cubits/note_categories_cubit.dart';
 import 'package:hive_firebase/features/note_categories/presentations/cubits/note_categories_state.dart';
+import 'package:hive_firebase/features/notes/domain/models/notes_model.dart';
 
+import '../features/notes/presentations/cubits/notes_cubit.dart';
 import '../utils/custom_theme.dart';
 
 class LabelsPage extends StatefulWidget {
-  const LabelsPage({super.key});
+  const LabelsPage({super.key, this.notesModel});
+
+  final NotesModel? notesModel;
 
   @override
   State<LabelsPage> createState() => _LabelsPageState();
@@ -24,18 +28,45 @@ class _LabelsPageState extends State<LabelsPage> {
   final Set<String> _selectedIds = {};
   late final noteCategoriesCubit = context.read<NoteCategoriesCubit>();
   late final authCubit = context.read<AuthCubit>();
+  late final notesCubit = context.read<NotesCubit>();
+  late bool? isAddLabelToNote;
 
   @override
   void initState() {
     super.initState();
+    isAddLabelToNote = widget.notesModel != null;
+
+    if(widget.notesModel?.categoryId != null) {
+      _selectedIds.addAll(widget.notesModel!.categoryId!);
+    }
   }
 
-  void _toggleSelection(String id) {
-    setState(() {
-      !_selectedIds.contains(id)
-          ? _selectedIds.add(id)
-          : _selectedIds.remove(id);
+  void _toggleSelection(String id) async {
+    setState(()  {
+      if(_selectedIds.contains(id)) {
+        _selectedIds.remove(id);
+      } else {
+        _selectedIds.add(id);
+      }
     });
+
+    if (isAddLabelToNote == true && widget.notesModel != null) {
+        await notesCubit.updateNote(
+          NotesModel(
+            id: widget.notesModel?.id ?? '',
+            uid: widget.notesModel?.uid ?? '',
+            title: widget.notesModel?.title,
+            description: widget.notesModel?.description,
+            createdAt: widget.notesModel?.createdAt,
+            updatedAt: DateTime.now(),
+            deletedAt: widget.notesModel?.deletedAt,
+            isBookmarked: widget.notesModel?.isBookmarked,
+            categoryId: _selectedIds.toList(),
+          ),
+        );
+
+        notesCubit.filterByLabel(id);
+      }
   }
 
   void _deleteCategory(String id) async {
@@ -48,9 +79,11 @@ class _LabelsPageState extends State<LabelsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: CustomFloatingButton(
-        onTap: () => context.push('/create-note-category'),
-      ),
+      floatingActionButton: isAddLabelToNote == true
+          ? null
+          :  CustomFloatingButton(
+              onTap: () => context.push('/create-note-category'),
+            ),
       body: SafeArea(
         child: SizedBox(
           width: double.infinity,
@@ -116,6 +149,8 @@ class _LabelsPageState extends State<LabelsPage> {
                                     toggleSelection: _toggleSelection,
                                     deleteCategory: _deleteCategory,
                                     isSelected: _selectedIds.contains(noteCategoryItem.id),
+                                    isAddLabelToNote: isAddLabelToNote,
+                                   
                                   );
                                 },
                               ),

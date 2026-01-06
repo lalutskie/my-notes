@@ -29,7 +29,7 @@ class NotesModel {
   final bool? isBookmarked;
 
   @HiveField(8)
-  final String? categoryId;
+  final List<String>? categoryId;
 
   NotesModel({
     required this.id,
@@ -59,7 +59,9 @@ class NotesModel {
           ? (map['deletedAt'] as Timestamp).toDate()
           : map['deletedAt'],
       isBookmarked: map['isBookmarked'] as bool,
-      categoryId: map['categoryId'],
+      categoryId: (map['categoryId'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
       
     );
   }
@@ -73,7 +75,7 @@ class NotesModel {
     DateTime? updatedAt,
     DateTime? deletedAt,
     bool? isBookmarked,
-    String? categoryId,
+    List<String>? categoryId,
   }) {
     return NotesModel(
       id: id ?? this.id,

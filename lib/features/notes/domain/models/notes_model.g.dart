@@ -25,7 +25,7 @@ class NotesModelAdapter extends TypeAdapter<NotesModel> {
       updatedAt: fields[5] as DateTime?,
       deletedAt: fields[6] as DateTime?,
       isBookmarked: fields[7] == null ? false : fields[7] as bool?,
-      categoryId: fields[8] as String?,
+      categoryId: (fields[8] as List?)?.cast<String>(),
     );
   }
 

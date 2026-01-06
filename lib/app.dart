@@ -104,7 +104,12 @@ class _MyAppState extends State<MyApp> {
         GoRoute(path: '/favorites', builder: (context, state) => FavoriteNotesPage()),
         GoRoute(path: '/search', builder: (context, state) => SearchPage()),
         GoRoute(path: '/create-note-category', builder: (context, state) => CreateNoteCategoryPage(),),
-        GoRoute(path: '/labels', builder: (context, state) => LabelsPage(),)
+        GoRoute(path: '/labels', builder: (context, state) {
+          final extras = state.extra as Map<String, dynamic>?;
+
+          final notesModel = extras?['note'] as NotesModel?;
+          return LabelsPage(notesModel: notesModel,);
+        },)
 
     
 

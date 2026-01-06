@@ -235,7 +235,10 @@ class NotesCubit extends Cubit<NotesState> {
       return;
     } 
 
-    final filteredNotes = currentNotes.where((note) => note.categoryId == categoryId).toList();
+    final filteredNotes = currentNotes.where((note) {
+      final categoryIds = note.categoryId ?? [];
+      return categoryIds.contains(categoryId);
+    }).toList();
 
     emit(NotesLoaded(filteredNotes));
   }

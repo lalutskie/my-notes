@@ -166,9 +166,13 @@ class _AddNotesPageState extends State<EditNotePage> {
 
                         PopupMenuItem(
                           onTap: () async {
+                            context.push('/labels', extra: {
+                              'note': widget.note,
+                            });
+
                           },
                           child: Text(
-                            'Label note',
+                            'Add Label',
                             style: CustomTheme.typography(context).bodyMedium
                                 .copyWith(
                                   color: CustomTheme.colors(context).primaryText,
